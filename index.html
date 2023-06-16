@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Weather App</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500&family=Poppins:wght@300;400&display=swap');
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      .container {
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .box {
+        width: 210px;
+        height: 50%;
+        background-color: rgb(163, 212, 252);
+        border: 1px solid white;
+        border-radius: 10px;
+        font-family: 'Noto Sans', sans-serif;
+      }
+
+      .upper {
+        height: 40%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: last baseline;
+        font-size: 50px;
+      }
+      .lower {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+      }
+      .location {
+        margin: 7px 0;
+      }
+      #days {
+        margin: 2px 0;
+      }
+      .temp {
+        margin: 7px 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="box">
+        <div class="upper" id="weathercondition">
+          <i class="fas fa-sun" style="color: #eccc68"></i>
+        </div>
+        <div class="lower">
+          <h2 class="location">
+            <i class="fa-solid fa-street-view"></i> {%location%}, {%country%}
+          </h2>
+          <p id="days">WED | 17 MAY | 7:06PM</p>
+          <h1 class="temp">{%tempval%}&deg;C</h1>
+          <p class="temp_minmax">
+            MIN {%tempMin%}&deg;C | MAX {%tempMax%}&deg;C
+          </p>
+        </div>
+      </div>
+    </div>
+    <script>
+      const date = document.getElementById("days");
+      let weathercondition = document.getElementById("weathercondition");
+      let tempStatus = "{%tempstatus%}";
+
+      if (tempStatus === "Sunny") {
+        weathercondition.innerHTML =
+          " <i class='fas fa-sun' style='color: #eccc68'></i>";
+      } else if (tempStatus === "Clouds") {
+        weathercondition.innerHTML =
+          " <i class='fas fa-cloud' style='color: #f1f2f6'></i>";
+      } else if (tempStatus === "Rainy") {
+        weathercondition.innerHTML =
+          " <i class='fas fa-cloud-rain' style='color: #a4b0be'></i>";
+      } else{
+        weathercondition.innerHTML =
+          " <i class='fas fa-sun' style='color: #44c3de'></i>";
+      }
+
+      const updateDate = () => {
+        const newDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const newDate = new Date();
+        const currDay = newDays[newDate.getDay()];
+        return currDay;
+      };
+
+      const updateTime = () => {
+        const months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        const now = new Date();
+        let newDate = now.getDate();
+        let newMonths = months[now.getMonth()];
+        let newHours = now.getHours();
+        let newMinutes = now.getMinutes();
+        let period = "PM";
+
+        if (newHours < 11) periods = "AM";
+        if (newHours > 12) newHours -= 12;
+        if (newMinutes < 10) newMinutes = "0" + newMinutes;
+        return `${newDate} ${newMonths} | ${newHours}:${newMinutes} ${period}`;
+      };
+      date.innerHTML = updateDate() + " | " + updateTime();
+    </script>
+  </body>
+</html>
